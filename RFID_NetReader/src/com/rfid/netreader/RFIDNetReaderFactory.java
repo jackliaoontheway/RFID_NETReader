@@ -26,7 +26,7 @@ public class RFIDNetReaderFactory {
 	private long m_handle = 0;// 读卡器操作句柄
 
 	private void loadDriver() {
-		 String baseDirPath = "C:\\Users\\vergi\\Documents\\workspace-sts-3.9.1.RELEASE\\RFID_NetReader";
+		 String baseDirPath = "C:\\projects\\rfidreader\\RFID_NETReader\\RFID_NetReader";
 		// 加载设备驱动
 //		String baseDirPath = System.getProperty("user.dir");
 		rfidlib_reader.RDR_LoadReaderDrivers(baseDirPath + "\\Drivers");
@@ -87,6 +87,7 @@ public class RFIDNetReaderFactory {
 			nret = rfidlib_LSGate.LSG_CmdGetReports(m_handle, flag, (byte) 10);
 			if (nret != 0) {
 				System.out.println(String.format("err:%d", nret));
+				break;
 			} else {
 				flag = 1;
 				int mCnt = rfidlib_reader.RDR_GetTagDataReportCount(m_handle);
@@ -102,9 +103,7 @@ public class RFIDNetReaderFactory {
 							flag = 0;
 							break;
 						}
-						
 						rfidList.add(String.valueOf(slData));
-
 						hReport = rfidlib_reader.RDR_GetTagDataReport(m_handle, rfid_def.RFID_SEEK_NEXT);
 					}
 				}
