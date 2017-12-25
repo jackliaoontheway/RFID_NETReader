@@ -25,10 +25,9 @@ public class RFIDNetReaderFactory {
 	private long m_handle = 0;// 读卡器操作句柄
 
 	private void loadDriver() {
-		 String baseDirPath = "C:\\projects\\rfidreader\\RFID_NETReader\\RFID_NetReader";
 		// 加载设备驱动
 //		String baseDirPath = System.getProperty("user.dir");
-		rfidlib_reader.RDR_LoadReaderDrivers(baseDirPath + "\\Drivers");
+		rfidlib_reader.RDR_LoadReaderDrivers("C:\\rfiddriver\\Drivers");
 	}
 
 	private void openDev(String Ip) {
@@ -102,7 +101,7 @@ public class RFIDNetReaderFactory {
 							flag = 0;
 							break;
 						}
-						rfidList.add(String.valueOf(slData));
+						rfidList.add(String.valueOf(slData).trim());
 						hReport = rfidlib_reader.RDR_GetTagDataReport(m_handle, rfid_def.RFID_SEEK_NEXT);
 					}
 				}
