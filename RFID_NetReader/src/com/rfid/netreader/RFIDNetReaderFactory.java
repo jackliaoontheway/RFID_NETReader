@@ -25,10 +25,10 @@ public class RFIDNetReaderFactory {
 		return RFID_INSTANCE;
 	}
 
-	private long m_handle = 0;// �������������
+	private long m_handle = 0;// 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟�
 
 	private void loadDriver() {
-		// �����豸����
+		// 锟斤拷锟斤拷锟借备锟斤拷锟斤拷
 //		String baseDirPath = System.getProperty("user.dir");
 		rfidlib_reader.RDR_LoadReaderDrivers("C:\\rfiddriver\\Drivers");
 	}
@@ -69,7 +69,7 @@ public class RFIDNetReaderFactory {
 	public static void main(String[] args) {
 		RFIDNetReaderFactory frm = new RFIDNetReaderFactory();
 
-		String ip = "192.168.0.99";
+		String ip = "192.168.5.7";
 
 		Set<String> rfidList = frm.readAllRFID(ip,new Date());
 		System.out.println(rfidList.size());
@@ -105,9 +105,11 @@ public class RFIDNetReaderFactory {
 							break;
 						}
 						
-						String strDate = new String(m_Time);
-						System.out.println(String.valueOf(slData).trim() +"--"+strDate);
-						SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						
+						String strDate = String.format("%d-%d-%d %d:%d:%d", m_Time[0],m_Time[1],m_Time[2],m_Time[3],
+								m_Time[4],m_Time[5]);
+						System.out.println(String.valueOf(slData).trim() +" ==> rfid time"+strDate +"==> start time" + startTime);
+						SimpleDateFormat dateFormat=new SimpleDateFormat("yy-MM-dd HH:mm:ss");
 						try {
 							Date rfidDate = dateFormat.parse(strDate);
 							if(rfidDate.after(startTime)) {
