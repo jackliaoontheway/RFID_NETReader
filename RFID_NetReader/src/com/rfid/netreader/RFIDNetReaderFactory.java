@@ -1,5 +1,8 @@
 package com.rfid.netreader;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,10 +25,10 @@ public class RFIDNetReaderFactory {
 		return RFID_INSTANCE;
 	}
 
-	private long m_handle = 0;// ¶Á¿¨Æ÷²Ù×÷¾ä±ú
+	private long m_handle = 0;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	private void loadDriver() {
-		// ¼ÓÔØÉè±¸Çý¶¯
+		// ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½
 //		String baseDirPath = System.getProperty("user.dir");
 		rfidlib_reader.RDR_LoadReaderDrivers("C:\\rfiddriver\\Drivers");
 	}
@@ -50,13 +53,13 @@ public class RFIDNetReaderFactory {
 		}
 	}
 
-	public Set<String> readAllRFID(String Ip) {
+	public Set<String> readAllRFID(String Ip,Date startTime) {
 
 		loadDriver();
 
 		openDev(Ip);
 
-		Set<String> rfidList = readRFID();
+		Set<String> rfidList = readRFID(startTime);
 
 		closeDev();
 
@@ -68,12 +71,12 @@ public class RFIDNetReaderFactory {
 
 		String ip = "192.168.0.99";
 
-		Set<String> rfidList = frm.readAllRFID(ip);
+		Set<String> rfidList = frm.readAllRFID(ip,new Date());
 		System.out.println(rfidList.size());
 		System.out.println(rfidList);
 	}
 
-	private Set<String> readRFID() {
+	private Set<String> readRFID(Date startTime) {
 		Set<String> rfidList = new TreeSet<>();
 
 		int nret = 0;
@@ -101,7 +104,19 @@ public class RFIDNetReaderFactory {
 							flag = 0;
 							break;
 						}
-						rfidList.add(String.valueOf(slData).trim());
+						
+						String strDate = new String(m_Time);
+						System.out.println(String.valueOf(slData).trim() +"--"+strDate);
+						SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						try {
+							Date rfidDate = dateFormat.parse(strDate);
+							if(rfidDate.after(startTime)) {
+								rfidList.add(String.valueOf(slData).trim());
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+						
 						hReport = rfidlib_reader.RDR_GetTagDataReport(m_handle, rfid_def.RFID_SEEK_NEXT);
 					}
 				}
