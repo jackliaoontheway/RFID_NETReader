@@ -108,11 +108,10 @@ public class RFIDNetReaderFactory {
 						
 						String strDate = String.format("%d-%d-%d %d:%d:%d", m_Time[0],m_Time[1],m_Time[2],m_Time[3],
 								m_Time[4],m_Time[5]);
-						System.out.println(String.valueOf(slData).trim() +" ==> rfid time"+strDate +"==> start time" + startTime);
 						SimpleDateFormat dateFormat=new SimpleDateFormat("yy-MM-dd HH:mm:ss");
 						try {
 							Date rfidDate = dateFormat.parse(strDate);
-							if(rfidDate.after(startTime)) {
+							if(startTime == null || rfidDate.after(startTime)) {
 								rfidList.add(String.valueOf(slData).trim());
 							}
 						} catch (ParseException e) {
