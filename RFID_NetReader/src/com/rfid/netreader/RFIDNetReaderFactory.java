@@ -105,17 +105,20 @@ public class RFIDNetReaderFactory {
 							break;
 						}
 						
-						
-						String strDate = String.format("%d-%d-%d %d:%d:%d", m_Time[0],m_Time[1],m_Time[2],m_Time[3],
-								m_Time[4],m_Time[5]);
-						SimpleDateFormat dateFormat=new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-						try {
-							Date rfidDate = dateFormat.parse(strDate);
-							if(startTime == null || rfidDate.after(startTime)) {
-								rfidList.add(String.valueOf(slData).trim());
+						if(startTime == null) {
+							rfidList.add(String.valueOf(slData).trim());
+						} else {
+							String strDate = String.format("%d-%d-%d %d:%d:%d", m_Time[0],m_Time[1],m_Time[2],m_Time[3],
+									m_Time[4],m_Time[5]);
+							SimpleDateFormat dateFormat=new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+							try {
+								Date rfidDate = dateFormat.parse(strDate);
+								if(rfidDate.after(startTime)) {
+									rfidList.add(String.valueOf(slData).trim());
+								}
+							} catch (ParseException e) {
+								e.printStackTrace();
 							}
-						} catch (ParseException e) {
-							e.printStackTrace();
 						}
 						
 						hReport = rfidlib_reader.RDR_GetTagDataReport(m_handle, rfid_def.RFID_SEEK_NEXT);
